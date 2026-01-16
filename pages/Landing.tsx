@@ -1,0 +1,340 @@
+
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Button, GlassCard } from '../components/UI';
+import { 
+  Play, Zap, Shield, Sparkles, ChevronRight, CheckCircle2, 
+  ArrowRight, MousePointerClick, Download, Sliders, Plus, Minus
+} from 'lucide-react';
+
+const FAQItem = ({ question, answer }: { question: string, answer: string }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <div className="border-b border-white/10 last:border-0">
+      <button 
+        className="w-full py-6 flex items-center justify-between text-left hover:text-white transition-colors"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <span className="font-medium text-lg">{question}</span>
+        {isOpen ? <Minus size={20} className="text-neutral-500" /> : <Plus size={20} className="text-neutral-500" />}
+      </button>
+      <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-48 opacity-100 pb-6' : 'max-h-0 opacity-0'}`}>
+        <p className="text-neutral-400 leading-relaxed">{answer}</p>
+      </div>
+    </div>
+  );
+};
+
+export default function Landing() {
+  return (
+    <div className="min-h-screen bg-black text-white selection:bg-white selection:text-black font-sans">
+      
+      {/* --- Navigation --- */}
+      <nav className="fixed w-full z-50 bg-black/60 backdrop-blur-xl border-b border-white/5 transition-all duration-300">
+        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
+              <div className="w-4 h-4 bg-black rounded-sm"></div>
+            </div>
+            <span className="font-bold text-xl tracking-tight">VideoGen AI</span>
+          </div>
+          
+          <div className="hidden md:flex items-center gap-10 text-sm font-medium text-neutral-400">
+            <Link to="/generate" className="hover:text-white transition-colors">Create</Link>
+            <a href="#gallery" className="hover:text-white transition-colors">Explore</a>
+            <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
+            <a href="#contact" className="hover:text-white transition-colors">Contact</a>
+          </div>
+
+          <div className="flex items-center gap-6">
+            <Link to="/auth/login" className="text-sm font-medium text-neutral-300 hover:text-white transition-colors">Log in</Link>
+            <Link to="/auth/signup">
+              <Button className="rounded-full px-6 text-sm font-semibold bg-white text-black hover:bg-neutral-200 border-0">
+                Get Started
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </nav>
+
+      {/* --- Hero Section --- */}
+      <section className="pt-40 pb-20 px-6 relative overflow-hidden flex flex-col items-center text-center">
+        {/* Ambient Glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-white/[0.05] rounded-full blur-[120px] -z-10 pointer-events-none"></div>
+
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-neutral-300 mb-8 backdrop-blur-md">
+           <Sparkles size={12} />
+           <span>Powered by Gemini Veo 3.1</span>
+        </div>
+
+        <h1 className="text-5xl md:text-8xl font-bold tracking-tighter leading-[1.05] max-w-5xl mx-auto mb-8">
+          Realistic video <br />
+          <span className="text-transparent bg-clip-text bg-gradient-to-b from-neutral-200 to-neutral-600">from pure text.</span>
+        </h1>
+        
+        <p className="text-lg md:text-xl text-neutral-400 max-w-2xl mx-auto leading-relaxed mb-10">
+          Create cinematic, high-fidelity videos in seconds. 
+          No cameras, no actors, just your imagination and our AI.
+        </p>
+
+        <div className="flex flex-col sm:flex-row items-center gap-4">
+          <Link to="/auth/signup">
+            <Button className="rounded-full px-10 py-6 text-lg bg-white text-black hover:bg-neutral-200 border-none transition-transform hover:scale-105">
+              Start Free Trial
+            </Button>
+          </Link>
+          <a href="#gallery">
+            <Button variant="ghost" className="rounded-full px-8 py-6 text-lg border border-white/20 hover:bg-white/10">
+              View Gallery <ChevronRight className="ml-2 w-5 h-5" />
+            </Button>
+          </a>
+        </div>
+      </section>
+
+      {/* --- Video Gallery Showcase --- */}
+      <section id="gallery" className="py-20 overflow-hidden">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold tracking-tight mb-4">Made with VideoGen</h2>
+          <p className="text-neutral-400">Unfiltered outputs generated by our community</p>
+        </div>
+        
+        {/* Marquee Effect / Horizontal Scroll */}
+        <div className="flex gap-6 px-6 overflow-x-auto pb-8 snap-x scrollbar-hide no-scrollbar justify-start md:justify-center flex-nowrap">
+          {[1, 2, 3, 4].map((i) => (
+             <div key={i} className="flex-none w-[300px] md:w-[400px] aspect-[9/16] md:aspect-video rounded-3xl overflow-hidden relative group cursor-pointer snap-center border border-white/10">
+               <img 
+                 src={`https://picsum.photos/seed/${i + 100}/800/1000`} 
+                 alt="Gallery Item" 
+                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100" 
+               />
+               <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                 <div className="w-16 h-16 bg-white/10 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/20 scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300">
+                    <Play fill="white" className="ml-1 text-white" />
+                 </div>
+               </div>
+               <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/80 to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                 <p className="text-sm font-medium text-white">"A cyberpunk city in neon rain..."</p>
+               </div>
+             </div>
+          ))}
+        </div>
+      </section>
+
+      {/* --- Features Grid --- */}
+      <section className="py-24 px-6 bg-neutral-950/50">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { icon: Sparkles, title: "Photorealistic", desc: "Cinema-grade quality indistinguishable from reality." },
+              { icon: Shield, title: "Consistent", desc: "Characters and styles remain stable across frames." },
+              { icon: Zap, title: "Lightning Fast", desc: "Generate 1080p clips in under 60 seconds." },
+              { icon: CheckCircle2, title: "High Quality", desc: "Native 4K rendering support for enterprise." }
+            ].map((feat, i) => (
+              <GlassCard key={i} className="p-8 rounded-3xl hover:bg-white/5 transition-colors border-white/5 group">
+                <div className="w-12 h-12 bg-neutral-900 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 border border-white/5">
+                  <feat.icon className="text-white" size={24} />
+                </div>
+                <h3 className="text-xl font-bold mb-3">{feat.title}</h3>
+                <p className="text-neutral-400 leading-relaxed text-sm">{feat.desc}</p>
+              </GlassCard>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- How It Works --- */}
+      <section className="py-32 px-6 bg-black relative">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">From thought to video</h2>
+            <p className="text-neutral-400 max-w-xl mx-auto">Three simple steps to generate professional content.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
+            {/* Connecting Line (Desktop) */}
+            <div className="hidden md:block absolute top-12 left-[16%] right-[16%] h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent z-0"></div>
+
+            {[
+              { icon: MousePointerClick, title: "1. Prompt", desc: "Describe your scene in natural language." },
+              { icon: Sliders, title: "2. Customize", desc: "Adjust ratio, style, and camera movement." },
+              { icon: Download, title: "3. Generate", desc: "Receive your high-definition video instantly." }
+            ].map((step, i) => (
+              <div key={i} className="relative z-10 flex flex-col items-center text-center group">
+                <div className="w-24 h-24 bg-neutral-900 rounded-full border border-white/10 flex items-center justify-center mb-8 shadow-[0_0_30px_rgba(255,255,255,0.05)] group-hover:shadow-[0_0_50px_rgba(255,255,255,0.1)] transition-shadow duration-500">
+                  <step.icon size={32} className="text-white" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">{step.title}</h3>
+                <p className="text-neutral-400 text-sm max-w-xs">{step.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- Testimonials --- */}
+      <section className="py-24 px-6 border-y border-white/5 bg-neutral-950">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-bold mb-12 text-center">Creators love VideoGen</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { quote: "The consistency of the characters is unlike anything else I've used.", author: "Sarah J.", role: "Filmmaker" },
+              { quote: "It cut my storyboard visualization time by 90%. Incredible tool.", author: "Mark D.", role: "Creative Director" },
+              { quote: "Finally, an AI video generator that actually understands cinematic lighting.", author: "Elena R.", role: "VFX Artist" }
+            ].map((t, i) => (
+              <div key={i} className="p-8 rounded-3xl bg-neutral-900/30 border border-white/5">
+                <div className="flex gap-1 mb-4">
+                  {[1,2,3,4,5].map(s => <span key={s} className="text-white text-xs">★</span>)}
+                </div>
+                <p className="text-lg text-neutral-200 mb-6 leading-relaxed">"{t.quote}"</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-neutral-700 to-neutral-800"></div>
+                  <div>
+                    <p className="font-bold text-sm">{t.author}</p>
+                    <p className="text-xs text-neutral-500">{t.role}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- Pricing --- */}
+      <section id="pricing" className="py-32 px-6">
+         <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-16">
+               <h2 className="text-4xl font-bold tracking-tight mb-4">Transparent Pricing</h2>
+               <p className="text-neutral-400">Scale your production without hidden fees.</p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
+              
+              {/* Free Plan */}
+              <div className="p-6 rounded-3xl border border-white/10 bg-neutral-900/20 backdrop-blur-sm h-full flex flex-col">
+                 <h3 className="text-lg font-bold mb-2">Free</h3>
+                 <p className="text-3xl font-bold mb-6 tracking-tight">$0</p>
+                 <ul className="space-y-4 mb-8 flex-1">
+                   <li className="flex gap-2 text-xs text-neutral-300"><CheckCircle2 size={14} className="text-neutral-500 shrink-0" /> 3 videos/mo</li>
+                   <li className="flex gap-2 text-xs text-neutral-300"><CheckCircle2 size={14} className="text-neutral-500 shrink-0" /> 480p Quality</li>
+                   <li className="flex gap-2 text-xs text-neutral-300"><CheckCircle2 size={14} className="text-neutral-500 shrink-0" /> Watermarked</li>
+                 </ul>
+                 <Link to="/auth/signup">
+                   <Button variant="ghost" className="w-full border border-white/20 rounded-xl hover:bg-white hover:text-black text-sm">Start Free</Button>
+                 </Link>
+              </div>
+
+              {/* Plus Plan */}
+              <div className="p-6 rounded-3xl border border-white/10 bg-neutral-900/20 backdrop-blur-sm h-full flex flex-col">
+                 <h3 className="text-lg font-bold mb-2">Plus</h3>
+                 <p className="text-3xl font-bold mb-6 tracking-tight">$7.99<span className="text-sm font-medium text-neutral-500">/mo</span></p>
+                 <ul className="space-y-4 mb-8 flex-1">
+                   <li className="flex gap-2 text-xs text-neutral-300"><CheckCircle2 size={14} className="text-neutral-500 shrink-0" /> 75 videos/mo</li>
+                   <li className="flex gap-2 text-xs text-neutral-300"><CheckCircle2 size={14} className="text-neutral-500 shrink-0" /> 720p Quality</li>
+                   <li className="flex gap-2 text-xs text-neutral-300"><CheckCircle2 size={14} className="text-neutral-500 shrink-0" /> No Watermark</li>
+                 </ul>
+                 <Link to="/auth/signup">
+                   <Button variant="secondary" className="w-full rounded-xl text-sm">Get Plus</Button>
+                 </Link>
+              </div>
+
+              {/* Pro Plan */}
+              <div className="p-6 rounded-3xl border border-white bg-white text-black relative scale-105 shadow-[0_0_50px_rgba(255,255,255,0.1)] h-full flex flex-col z-10">
+                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Popular</div>
+                 <h3 className="text-lg font-bold mb-2">Pro</h3>
+                 <p className="text-3xl font-bold mb-6 tracking-tight">$29.99<span className="text-sm font-medium text-neutral-500">/mo</span></p>
+                 <ul className="space-y-4 mb-8 flex-1">
+                   <li className="flex gap-2 text-xs font-medium"><CheckCircle2 size={14} /> 250 videos/mo</li>
+                   <li className="flex gap-2 text-xs font-medium"><CheckCircle2 size={14} /> 1080p Quality</li>
+                   <li className="flex gap-2 text-xs font-medium"><CheckCircle2 size={14} /> Commercial License</li>
+                   <li className="flex gap-2 text-xs font-medium"><CheckCircle2 size={14} /> Priority Queue</li>
+                 </ul>
+                 <Link to="/auth/signup">
+                    <Button className="w-full bg-black text-white hover:bg-neutral-800 rounded-xl py-3 border-none shadow-none text-sm">Get Pro</Button>
+                 </Link>
+              </div>
+
+              {/* Enterprise Plan */}
+              <div className="p-6 rounded-3xl border border-white/10 bg-neutral-900/20 backdrop-blur-sm h-full flex flex-col">
+                 <h3 className="text-lg font-bold mb-2">Enterprise</h3>
+                 <p className="text-3xl font-bold mb-6 tracking-tight">$55<span className="text-sm font-medium text-neutral-500">/mo</span></p>
+                 <ul className="space-y-4 mb-8 flex-1">
+                   <li className="flex gap-2 text-xs text-neutral-300"><CheckCircle2 size={14} className="text-neutral-500 shrink-0" /> Unlimited generation</li>
+                   <li className="flex gap-2 text-xs text-neutral-300"><CheckCircle2 size={14} className="text-neutral-500 shrink-0" /> 4K Quality</li>
+                   <li className="flex gap-2 text-xs text-neutral-300"><CheckCircle2 size={14} className="text-neutral-500 shrink-0" /> API Access</li>
+                 </ul>
+                 <Link to="/auth/signup">
+                    <Button variant="ghost" className="w-full border border-white/20 rounded-xl hover:bg-white hover:text-black text-sm">Contact Sales</Button>
+                 </Link>
+              </div>
+            </div>
+         </div>
+      </section>
+
+      {/* --- FAQ --- */}
+      <section className="py-20 px-6 max-w-3xl mx-auto">
+        <h2 className="text-3xl font-bold mb-10 text-center">Frequently asked questions</h2>
+        <div className="space-y-2">
+          <FAQItem question="Can I use the videos for commercial purposes?" answer="Yes! If you subscribe to our Pro or Enterprise plans, you own full commercial rights to all videos generated." />
+          <FAQItem question="How does the credit system work?" answer="Generating 1 second of video costs roughly 4 credits. Pro plans give you enough credits for about 250 standard videos per month." />
+          <FAQItem question="Is my data private?" answer="Absolutely. We do not use your private prompts or generated videos to train our public models without your explicit permission." />
+          <FAQItem question="What happens if I run out of credits?" answer="You can easily top-up credits at any time from your dashboard, or upgrade your plan for a better rate." />
+        </div>
+      </section>
+
+      {/* --- Footer --- */}
+      <footer id="contact" className="border-t border-white/10 bg-black pt-20 pb-10 px-6">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+          <div className="space-y-4">
+             <div className="flex items-center gap-2">
+              <div className="w-6 h-6 bg-white rounded-md flex items-center justify-center">
+                <div className="w-3 h-3 bg-black rounded-sm"></div>
+              </div>
+              <span className="font-bold text-lg tracking-tight">VideoGen AI</span>
+            </div>
+            <p className="text-neutral-500 text-sm leading-relaxed">
+              Empowering creators with the world's most advanced AI video generation technology.
+            </p>
+          </div>
+          
+          <div>
+            <h4 className="font-bold mb-4">Product</h4>
+            <ul className="space-y-2 text-sm text-neutral-500">
+              <li><a href="#" className="hover:text-white transition-colors">Features</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Showcase</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">API</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-bold mb-4">Company</h4>
+            <ul className="space-y-2 text-sm text-neutral-500">
+              <li><a href="#" className="hover:text-white transition-colors">About</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-bold mb-4">Legal</h4>
+            <ul className="space-y-2 text-sm text-neutral-500">
+              <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
+            </ul>
+          </div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-white/10">
+          <p className="text-xs text-neutral-600">© 2024 VideoGen AI Inc. All rights reserved.</p>
+          <div className="flex gap-6">
+             {/* Social placeholders */}
+             <div className="w-5 h-5 bg-neutral-800 rounded-full hover:bg-white transition-colors cursor-pointer"></div>
+             <div className="w-5 h-5 bg-neutral-800 rounded-full hover:bg-white transition-colors cursor-pointer"></div>
+             <div className="w-5 h-5 bg-neutral-800 rounded-full hover:bg-white transition-colors cursor-pointer"></div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
